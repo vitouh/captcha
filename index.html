@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>reCAPTCHA</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <!-- Spinner/loading animation -->
+  <div class="spinner" id="spinner"></div>
+
+  <!-- Fake reCAPTCHA checkbox -->
+  <div class="captcha-box" id="captchaBox" style="display:none;">
+    <div class="recaptcha-top">
+      <input type="checkbox" id="fakeCheckbox"/>
+      <label for="fakeCheckbox">I'm not a robot</label>
+      <img src="assets/recaptcha-logo.png" class="logo" />
+    </div>
+  </div>
+
+  <!-- Fake image selection puzzle -->
+  <div class="image-grid" id="imageGrid" style="display:none;">
+    <p>Select all images with buses</p>
+    <div class="grid" id="gridContainer">
+      <!-- JS will insert images here -->
+    </div>
+    <button id="verifyBtn">Verify</button>
+    <p id="errorMsg" class="error"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
