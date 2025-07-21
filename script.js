@@ -1,61 +1,96 @@
-const spinnerScreen = document.getElementById("spinnerScreen");
-const captchaBox = document.getElementById("captchaBox");
-const fakeCheckbox = document.getElementById("fakeCheckbox");
-const challengeContainer = document.getElementById("challengeContainer");
-const nextButton = document.getElementById("nextButton");
-const unavailableScreen = document.getElementById("unavailableScreen");
+let gameIndex = 0;
+let mistakes = 0;
+const maxMistakes = 15;
 
-let step = 0;
-
-window.onload = () => {
-  setTimeout(() => {
-    spinnerScreen.classList.add("hidden");
-    captchaBox.classList.remove("hidden");
-  }, 2000);
-};
-
-fakeCheckbox.addEventListener("click", () => {
-  fakeCheckbox.style.backgroundColor = "#0f0";
-  fakeCheckbox.style.borderColor = "#0f0";
-  startChallenge();
-});
-
-function startChallenge() {
-  challengeContainer.classList.remove("hidden");
-  showNextStep();
-}
-
-function showNextStep() {
-  const challenges = [
-    "Select all images with traffic lights. (But there are none!)",
-    "Solve this equation: 15 + 32 x 2 - (12 / 3)",
-    "Find the missing number in the sequence: 2, 4, 8, ?, 32",
-    "Rearrange the letters: 'CAPTHCA' to form a real word.",
-    "What is the square root of 3249?",
-    "Find X: 3x + 2 = 17",
-    "Translate: 'Je ne suis pas un robot.'",
-    "How many triangles are in this image? (No image provided.)"
-  ];
-
-  if (step < challenges.length) {
-    challengeContainer.innerHTML = `<div class="challenge"><strong>Challenge ${step + 1}:</strong> ${challenges[step]}</div>`;
-    nextButton.classList.remove("hidden");
-    step++;
-  } else {
-    finishCaptcha();
+const games = [
+  {
+    prompt: "What is 2 + 2?",
+    answer: "4"
+  },
+  {
+    prompt: "Type the word 'captcha'",
+    answer: "captcha"
+  },
+  {
+    prompt: "What is the reversed voice saying? (Hint: reversed)",
+    answer: "reversed"
+  },
+  {
+    prompt: "Spell 'banana' backwards.",
+    answer: "ananab"
+  },
+  {
+    prompt: "Type what you see in the image.",
+    image: "recaptcha.png",
+    answer: "apple"
+  },
+  {
+    prompt: "Quick! What's the capital of France?",
+    answer: "paris"
+  },
+  {
+    prompt: "Decode this: 01010000 (ASCII binary)",
+    answer: "P"
+  },
+  {
+    prompt: "Final Question: Type 'Ultra Real'",
+    answer: "ultra real"
   }
+];
+
+function loadGame() {
+  const container = document.getElementById("game-container");
+  const feedback = document.getElementById("feedback");
+  feedback.innerText = "";
+
+  if (mistakes >= maxMistakes) {
+    window.location.href = "access_denied.png";
+    return;
+  }
+
+  if (gameIndex >= games.length) {
+    window.location.href = "404.png";
+    return;
+  }
+
+  const game = games[gameIndex];
+  container.innerHTML = "";
+
+  const prompt = document.createElement("p");
+  prompt.textContent = game.prompt;
+  container.appendChild(prompt);
+
+  if (game.image) {
+    const img = document.createElement("img");
+    img.src = game.image;
+    container.appendChild(img);
+  }
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "Your answer...";
+  container.appendChild(input);
+
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      checkAnswer(input.value.trim().toLowerCase());
+    }
+  });
 }
 
-nextButton.addEventListener("click", () => {
-  showNextStep();
-});
+function checkAnswer(userInput) {
+  const correct = games[gameIndex].answer.toLowerCase();
+  const feedback = document.getElementById("feedback");
 
-function finishCaptcha() {
-  captchaBox.classList.add("hidden");
-  spinnerScreen.classList.remove("hidden");
+  if (userInput === correct) {
+    gameIndex++;
+    feedback.innerText = "✅ Correct!";
+  } else {
+    mistakes++;
+    feedback.innerText = `❌ Wrong! Mistakes: ${mistakes}/${maxMistakes}`;
+  }
 
-  setTimeout(() => {
-    spinnerScreen.classList.add("hidden");
-    unavailableScreen.classList.remove("hidden");
-  }, 2000);
+  setTimeout(loadGame, 1000);
 }
+
+window.onload = loadGame;
