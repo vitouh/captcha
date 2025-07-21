@@ -1,26 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Verify You're Human</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Totally Real Captcha</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="spinner-screen" id="spinnerScreen">
-    <img src="spinner.gif" alt="Loading..." class="spinner" />
-  </div>
-
-  <div class="captcha-box hidden" id="captchaBox">
-    <h2>I'm not a robot</h2>
-    <div class="checkbox" id="fakeCheckbox"></div>
-    <div id="challengeContainer" class="hidden"></div>
-    <button id="nextButton" class="hidden">Next</button>
-  </div>
-
-  <div class="unavailable-screen hidden" id="unavailableScreen">
-    <h1>🔒 Service Unavailable</h1>
-    <p>The server is temporarily unable to handle your request.</p>
+  <div id="main">
+    <h1>Totally Not a Hard Captcha</h1>
+    <div id="game-container"></div>
+    <p id="feedback"></p>
+    <div id="spinner" class="hidden">
+      <img src="spinner.gif" alt="Loading...">
+    </div>
   </div>
 
   <script src="script.js"></script>
