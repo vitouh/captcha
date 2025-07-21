@@ -3,30 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>reCAPTCHA</title>
-  <link rel="stylesheet" href="style.css"/>
+  <title>Verify You're Human</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Spinner/loading animation -->
-  <div class="spinner" id="spinner"></div>
-
-  <!-- Fake reCAPTCHA checkbox -->
-  <div class="captcha-box" id="captchaBox" style="display:none;">
-    <div class="recaptcha-top">
-      <input type="checkbox" id="fakeCheckbox"/>
-      <label for="fakeCheckbox">I'm not a robot</label>
-      <img src="assets/recaptcha-logo.png" class="logo" />
-    </div>
+  <div class="spinner-screen" id="spinnerScreen">
+    <img src="spinner.gif" alt="Loading..." class="spinner" />
   </div>
 
-  <!-- Fake image selection puzzle -->
-  <div class="image-grid" id="imageGrid" style="display:none;">
-    <p>Select all images with buses</p>
-    <div class="grid" id="gridContainer">
-      <!-- JS will insert images here -->
-    </div>
-    <button id="verifyBtn">Verify</button>
-    <p id="errorMsg" class="error"></p>
+  <div class="captcha-box hidden" id="captchaBox">
+    <h2>I'm not a robot</h2>
+    <div class="checkbox" id="fakeCheckbox"></div>
+    <div id="challengeContainer" class="hidden"></div>
+    <button id="nextButton" class="hidden">Next</button>
+  </div>
+
+  <div class="unavailable-screen hidden" id="unavailableScreen">
+    <h1>🔒 Service Unavailable</h1>
+    <p>The server is temporarily unable to handle your request.</p>
   </div>
 
   <script src="script.js"></script>
