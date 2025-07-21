@@ -1,41 +1,61 @@
-window.onload = function () {
-  // Show loading spinner for 3 seconds
+const spinnerScreen = document.getElementById("spinnerScreen");
+const captchaBox = document.getElementById("captchaBox");
+const fakeCheckbox = document.getElementById("fakeCheckbox");
+const challengeContainer = document.getElementById("challengeContainer");
+const nextButton = document.getElementById("nextButton");
+const unavailableScreen = document.getElementById("unavailableScreen");
+
+let step = 0;
+
+window.onload = () => {
   setTimeout(() => {
-    document.getElementById("spinner").style.display = "none";
-    document.getElementById("captchaBox").style.display = "flex";
-  }, 3000);
+    spinnerScreen.classList.add("hidden");
+    captchaBox.classList.remove("hidden");
+  }, 2000);
 };
 
-document.getElementById("fakeCheckbox").addEventListener("change", function () {
-  if (this.checked) {
-    document.getElementById("captchaBox").style.display = "none";
-    document.getElementById("imageGrid").style.display = "block";
-    loadImages();
-  }
+fakeCheckbox.addEventListener("click", () => {
+  fakeCheckbox.style.backgroundColor = "#0f0";
+  fakeCheckbox.style.borderColor = "#0f0";
+  startChallenge();
 });
 
-function loadImages() {
-  const grid = document.getElementById("gridContainer");
-  grid.innerHTML = "";
+function startChallenge() {
+  challengeContainer.classList.remove("hidden");
+  showNextStep();
+}
 
-  for (let i = 1; i <= 9; i++) {
-    const img = document.createElement("img");
-    img.src = `assets/bus${i}.jpg`;
-    img.addEventListener("click", () => {
-      img.classList.toggle("selected");
-    });
-    grid.appendChild(img);
+function showNextStep() {
+  const challenges = [
+    "Select all images with traffic lights. (But there are none!)",
+    "Solve this equation: 15 + 32 x 2 - (12 / 3)",
+    "Find the missing number in the sequence: 2, 4, 8, ?, 32",
+    "Rearrange the letters: 'CAPTHCA' to form a real word.",
+    "What is the square root of 3249?",
+    "Find X: 3x + 2 = 17",
+    "Translate: 'Je ne suis pas un robot.'",
+    "How many triangles are in this image? (No image provided.)"
+  ];
+
+  if (step < challenges.length) {
+    challengeContainer.innerHTML = `<div class="challenge"><strong>Challenge ${step + 1}:</strong> ${challenges[step]}</div>`;
+    nextButton.classList.remove("hidden");
+    step++;
+  } else {
+    finishCaptcha();
   }
 }
 
-document.getElementById("verifyBtn").addEventListener("click", () => {
-  const selected = document.querySelectorAll(".grid img.selected").length;
-  const error = document.getElementById("errorMsg");
-
-  // Always fail, because it's a troll
-  if (selected < 3 || selected > 6) {
-    error.textContent = "Please try again.";
-  } else {
-    error.textContent = "Still not correct. Try again.";
-  }
+nextButton.addEventListener("click", () => {
+  showNextStep();
 });
+
+function finishCaptcha() {
+  captchaBox.classList.add("hidden");
+  spinnerScreen.classList.remove("hidden");
+
+  setTimeout(() => {
+    spinnerScreen.classList.add("hidden");
+    unavailableScreen.classList.remove("hidden");
+  }, 2000);
+}
